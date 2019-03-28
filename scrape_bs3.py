@@ -12,12 +12,14 @@ soup = BeautifulSoup(source, 'lxml')
 csv_wirter.writerow(["hn_link"])
 
 tds= soup.find_all('td', {'class':'subtext'})
-for a in tds:
-    links= a.find_all('a')
-    for link in links:
-        if "comments" in link.text:
-            hn_links = link["href"]
-            print(hn_links)
-    csv_wirter.writerow([hn_links])
+for a_tag in tds:
+	links= a_tag.find_all('a')
+	for link in links:
+		if "comments" in link.text:
+			hn_links = link
+			print(hn_links)
+		
+	csv_wirter.writerow([hn_links])
+	break
 
 csv_file.close()
