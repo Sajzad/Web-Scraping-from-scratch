@@ -11,18 +11,19 @@ csv_writer.writerow(["title", "links", "scores", "hn_links"])
 soup = BeautifulSoup(src, "lxml")
 
 tr_tags = soup.find_all("tr")
+titles = ""
+links = ""
+scores = ""
+hn_links = ""
 
 for tr in tr_tags:
-	titles = ""
-	links = ""
-	scores = ""
-	hn_links = ""
+
 	tds = tr.find_all("td", {"class", "title"})
 	if tds:
 		for td in tds:
-			if td.find("a"):
-				titles = td.find("a").text
-				links = td.find("a")["href"]
+			if td.find("a", {"class":"storylink"}):
+				titles = td.find("a", {"class":"storylink"}).text
+				links = td.find("a", {"class":"storylink"})["href"]
 				print(titles, links)
 
 	td = tr.find("td",{"class", "subtext"})
@@ -35,5 +36,8 @@ for tr in tr_tags:
 			if td.find("span"):
 				scores= td.find("span").text.replace("points","")
 				print(scores)
+
+
 	csv_writer.writerow([titles, links, scores, hn_links])
+print(len(titles))
 csv_file.close()
